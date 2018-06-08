@@ -14,7 +14,7 @@ class Agent:
         self.Q = defaultdict(lambda: np.zeros(self.nA))
         #init epsilon, alpha, gamma
         self.eps = 0.005
-        self.alpha = 0.2
+        self.alpha = 0.05
         self.gamma = 1.0
 
     def select_action(self, state):
@@ -48,7 +48,9 @@ class Agent:
         - next_state: the current state of the environment
         - done: whether the episode is complete (True or False)
         """
-        # Calculate discounted reward for state & action
-        G_t  = reward + self.gamma * self.Q[state][action]
+        # Get the next action for the next state
+        next_action = self.select_action(next_state)
+        # Calculate discounted reward for next state & next action
+        G_t  = reward + self.gamma * self.Q[next_state][next_action]
         # Update knowledge
         self.Q[state][action] += self.alpha * (G_t - self.Q[state][action])
